@@ -1,5 +1,5 @@
 // @author Christian Babin
-// @version 0.1.2
+// @version 0.1.3
 // https://github.com/babincc/dart_gov_fbi/blob/master/lib/dart_gov_fbi.dart
 
 export 'package:dart_gov_fbi/domain/models/fbi_image.dart';
