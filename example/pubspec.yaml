@@ -1,0 +1,26 @@
+name: example
+description: Demonstrates how to use the dart_gov_fbi package.
+publish_to: "none"
+version: 0.1.2
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  dart_gov_fbi:
+    path: ../
+  cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+  lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
