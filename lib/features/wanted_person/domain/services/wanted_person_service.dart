@@ -1,17 +1,17 @@
 import 'package:dart_gov_fbi/constants/api_fields.dart';
 import 'package:dart_gov_fbi/features/wanted_person/domain/models/wanted_person.dart';
 import 'package:dart_gov_fbi/features/wanted_person/domain/models/wanted_person_result_set.dart';
-import 'package:dart_gov_fbi/utils/json_tool.dart';
+import 'package:dart_gov_fbi/utils/api_tool.dart';
 import 'package:dart_gov_fbi/utils/url_tool.dart';
-import 'package:http/http.dart' as http;
 
 class WantedPersonService {
   static Future<WantedPerson> fetchWantedPerson(String id) async {
     final String host = 'https://api.fbi.gov/@wanted-person/$id';
 
-    final response = await http.get(Uri.parse(host));
-
-    Map<String, dynamic> responseArr = readJson(response.body);
+    final responseArr = await fetchApiJson(
+      Uri.parse(host),
+      allowNotFound: true,
+    );
 
     if (responseArr.isEmpty) return WantedPerson.empty();
 
@@ -43,9 +43,7 @@ class WantedPersonService {
       status: status,
     );
 
-    final response = await http.get(Uri.parse(host));
-
-    Map<String, dynamic> responseArr = readJson(response.body);
+    final responseArr = await fetchApiJson(Uri.parse(host));
 
     if (responseArr.isEmpty) return WantedPersonResultSet.empty();
 
@@ -69,8 +67,9 @@ class WantedPersonService {
     return UrlTool.buildUrl(
       baseUrl: baseUrl,
       queryParams: {
-        'pageSize': pageSize.toString(),
-        'page': page.toString(),
+        'pageSize':
+            pageSize == null ? null : (pageSize < 1 ? 1 : pageSize).toString(),
+        'page': page?.toString(),
         'sort_on': sortOn,
         'sort_order': sortOrder,
         'title': title,

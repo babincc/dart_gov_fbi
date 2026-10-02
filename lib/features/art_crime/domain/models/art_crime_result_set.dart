@@ -53,7 +53,7 @@ class ArtCrimeResultSet {
     return {
       ApiFields.total: total,
       ApiFields.page: page,
-      ApiFields.artCrimes: artCrimes?.map((artCrime) => artCrime.toJson()),
+      ApiFields.artCrimes: artCrimes?.map((artCrime) => artCrime.toJson()).toList(),
     };
   }
 

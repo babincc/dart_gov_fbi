@@ -143,10 +143,11 @@ void main() {
 
           final ArtCrime artCrime2 = await fetchArtCrime(artCrime.id!);
 
-          expect(
-            artCrime == artCrime2,
-            true,
-          );
+          // List responses contain summaries; detail responses add fields.
+          expect(artCrime2.isNotEmpty, true);
+          expect(artCrime2.id, artCrime.id);
+          expect(artCrime2.uid, artCrime.uid);
+          expect(artCrime2.title, artCrime.title);
         },
       );
 

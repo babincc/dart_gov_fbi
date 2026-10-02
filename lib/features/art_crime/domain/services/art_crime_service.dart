@@ -1,17 +1,17 @@
 import 'package:dart_gov_fbi/constants/api_fields.dart';
 import 'package:dart_gov_fbi/features/art_crime/domain/models/art_crime.dart';
 import 'package:dart_gov_fbi/features/art_crime/domain/models/art_crime_result_set.dart';
-import 'package:dart_gov_fbi/utils/json_tool.dart';
+import 'package:dart_gov_fbi/utils/api_tool.dart';
 import 'package:dart_gov_fbi/utils/url_tool.dart';
-import 'package:http/http.dart' as http;
 
 class ArtCrimeService {
   static Future<ArtCrime> fetchArtCrime(String id) async {
     final String host = 'https://api.fbi.gov/@artcrimes/$id';
 
-    final response = await http.get(Uri.parse(host));
-
-    Map<String, dynamic> responseArr = readJson(response.body);
+    final responseArr = await fetchApiJson(
+      Uri.parse(host),
+      allowNotFound: true,
+    );
 
     if (responseArr.isEmpty) return ArtCrime.empty();
 
@@ -41,9 +41,7 @@ class ArtCrimeService {
       referenceNumber: referenceNumber,
     );
 
-    final response = await http.get(Uri.parse(host));
-
-    Map<String, dynamic> responseArr = readJson(response.body);
+    final responseArr = await fetchApiJson(Uri.parse(host));
 
     if (responseArr.isEmpty) return ArtCrimeResultSet.empty();
 
@@ -66,8 +64,9 @@ class ArtCrimeService {
     return UrlTool.buildUrl(
       baseUrl: baseUrl,
       queryParams: {
-        'pageSize': pageSize.toString(),
-        'page': page.toString(),
+        'pageSize':
+            pageSize == null ? null : (pageSize < 1 ? 1 : pageSize).toString(),
+        'page': page?.toString(),
         'sort_on': sortOn,
         'sort_order': sortOrder,
         'title': title,

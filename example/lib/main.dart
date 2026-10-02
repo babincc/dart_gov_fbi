@@ -26,10 +26,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  /// The future that fetches the wanted persons.
-  final Future wantedPersonsFuture = fetchWantedPersons(
-    page: Random().nextInt(10) + 1,
-  );
+  late Future<WantedPersonResultSet> wantedPersonsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    wantedPersonsFuture = fetchWantedPersons();
+  }
+
+  void _refresh() {
+    setState(() {
+      wantedPersonsFuture = fetchWantedPersons();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,39 +49,32 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () {
-              setState(() {});
-            },
+            onPressed: _refresh,
           ),
         ],
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<WantedPersonResultSet>(
         future: wantedPersonsFuture,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data != null &&
-                snapshot.data is WantedPersonResultSet) {
-              // Get the values of the future.
-              final WantedPersonResultSet results =
-                  snapshot.data as WantedPersonResultSet;
-
-              if (results.wantedPersons != null &&
-                  results.wantedPersons!.isNotEmpty) {
-                final int max = results.wantedPersons!.length - 1;
-                final int index = Random().nextInt(max + 1);
-
-                // Get a random wanted person.
-                final WantedPerson person = results.wantedPersons![index];
-
-                return _wantedPoster(context, person);
-              }
-            }
-
-            return const Text('Error!');
-          } else if (snapshot.hasError) {
-            return const Text('Error!');
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
           }
-          return const CircularProgressIndicator();
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child:
+                    Text('Unable to load wanted persons.\n${snapshot.error}\n'
+                        'Press Refresh to try again.'),
+              ),
+            );
+          }
+          final persons = snapshot.data?.wantedPersons;
+          if (persons == null || persons.isEmpty) {
+            return const Center(child: Text('No wanted persons found.'));
+          }
+          final person = persons[Random().nextInt(persons.length)];
+          return _wantedPoster(context, person);
         },
       ),
     );

@@ -58,6 +58,8 @@ class ApiFields {
 
   static const String id = '@id';
 
+  static const String pathId = 'pathId';
+
   static const String idInAgency = 'idInAgency';
 
   static const String images = 'images';

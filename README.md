@@ -10,7 +10,7 @@ In the `pubspec.yaml` of your project, add the following dependency:
 
 ```yaml
 dependencies:
-  dart_gov_fbi: ^0.1.3
+  dart_gov_fbi: ^0.1.4
 ```
 
 Import it to each file you use it in:
@@ -48,10 +48,10 @@ fetchWantedPersons(page: 3, pageSize: 25); // Wanted persons
 
 // Fetch the last page by reversing the order
 fetchArtCrimes(
-  sortDirection = ArtCrimeSortDirection.ascending,
+  sortDirection: ArtCrimeSortDirection.ascending,
 );
 fetchWantedPersons(
-  sortDirection = WantedPersonSortDirection.ascending,
+  sortDirection: WantedPersonSortDirection.ascending,
 );
 ```
 

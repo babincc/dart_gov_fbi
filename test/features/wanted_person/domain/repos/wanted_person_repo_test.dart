@@ -147,10 +147,11 @@ void main() {
           final WantedPerson wantedPerson2 =
               await fetchWantedPerson(wantedPerson.id!);
 
-          expect(
-            wantedPerson == wantedPerson2,
-            true,
-          );
+          // List responses contain summaries; detail responses add fields.
+          expect(wantedPerson2.isNotEmpty, true);
+          expect(wantedPerson2.id, wantedPerson.id);
+          expect(wantedPerson2.uid, wantedPerson.uid);
+          expect(wantedPerson2.title, wantedPerson.title);
         },
       );
 

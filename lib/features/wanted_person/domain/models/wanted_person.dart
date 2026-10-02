@@ -66,7 +66,7 @@ class WantedPerson {
 
   /// Creates a [WantedPerson] object from a JSON object.
   factory WantedPerson.fromJson(Map<String, dynamic> json) {
-    String? id = json[ApiFields.id];
+    String? id = json[ApiFields.id] ?? json[ApiFields.pathId];
 
     if (id != null) {
       id = id.replaceAll('https://api.fbi.gov/@wanted-person/', '');

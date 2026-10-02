@@ -55,7 +55,7 @@ class WantedPersonResultSet {
       ApiFields.total: total,
       ApiFields.page: page,
       ApiFields.wantedPersons:
-          wantedPersons?.map((wantedPerson) => wantedPerson.toJson()),
+          wantedPersons?.map((wantedPerson) => wantedPerson.toJson()).toList(),
     };
   }
 
